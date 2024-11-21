@@ -9,12 +9,48 @@
 <body>
     <div class="container">
         <h2>Password Strength Checker</h2>
-        <input type="password" id="password" placeholder="Enter your password" onkeyup="checkPasswordStrength()">
-        <div id="strength-message"></div>
+        <input type="password" id="password" placeholder="Enter your password">
         <div id="strength-bar">
             <div id="strength-level"></div>
         </div>
+        <div id="strength-message">Enter a password to check strength</div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const strengthLevel = document.getElementById('strength-level');
+        const strengthMessage = document.getElementById('strength-message');
+    
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            let strength = 0;
+    
+            // Evaluate password strength
+            if (password.length > 5) strength++;
+            if (password.length > 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[@$!%*?&]/.test(password)) strength++;
+    
+            // Calculate strength percentage
+            const strengthPercent = (strength / 5) * 100;
+            strengthLevel.style.width = strengthPercent + '%';
+    
+            // Update strength bar and message
+            if (strengthPercent < 40) {
+                strengthLevel.style.backgroundColor = 'red';
+                strengthMessage.textContent = 'Weak password';
+                strengthMessage.style.color = 'red';
+            } else if (strengthPercent < 70) {
+                strengthLevel.style.backgroundColor = 'orange';
+                strengthMessage.textContent = 'Moderate password';
+                strengthMessage.style.color = 'orange';
+            } else {
+                strengthLevel.style.backgroundColor = 'green';
+                strengthMessage.textContent = 'Strong password';
+                strengthMessage.style.color = 'green';
+            }
+        });
+    </script>
 </body>
 </html>
